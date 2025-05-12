@@ -80,3 +80,21 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# User-defined JavaScript
+userScript: |
+  import DoNothingBot from '../lib/bots/donothing.js'
+  import OKBot from '../lib/bots/ok.js'
+
+  export default {
+    ok: new OKBot('ok'),
+    null: new DoNothingBot('null')
+  }
+
+# Configuration for where to mount the script
+scriptConfig:
+  mountPath: "/app/bots/"
+  fileName: "index.js"
+
+activitypubbot:
+  origin: chart-example.local

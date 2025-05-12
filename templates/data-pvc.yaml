@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "activitypub-bot.fullname" . }}-data-pvc
+  labels:
+    app.kubernetes.io/name: {{ include "activitypub-bot.name" . }}
+    helm.sh/chart: {{ include "activitypub-bot.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.sqlite.storageSize | default "10Gi" }}
+  storageClassName: {{ .Values.sqlite.storageClassName | quote }}

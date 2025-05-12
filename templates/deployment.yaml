@@ -29,6 +29,11 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          - name: bots
+            mountPath: {{ .Values.scriptConfig.mountPath }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -39,12 +44,17 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: /livez
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: /readyz
               port: http
+          env:
+            DATABASE_URL: "sqlite:/data/activitypubbot.db"
+            ORIGIN: {{ .Values.activitypubbot.origin }}
+            PORT: {{ .Values.service.port }}
+            BOTS_CONFIG_FILE: "{{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -59,3 +69,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "activitypub-bot.fullname" . }}-data-pvc
+        - name: bots
+          configMap:
+            name: {{ include "mychart.fullname" . }}-bots
