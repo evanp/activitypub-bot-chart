@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "activitypub-bot.fullname" . }}-test-connection"
+  labels:
+    {{- include "activitypub-bot.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "activitypub-bot.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
