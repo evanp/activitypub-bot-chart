@@ -51,10 +51,16 @@ spec:
               path: /readyz
               port: http
           env:
-            DATABASE_URL: "sqlite:/data/activitypubbot.db"
-            ORIGIN: {{ .Values.activitypubbot.origin }}
-            PORT: {{ .Values.service.port }}
-            BOTS_CONFIG_FILE: "{{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}"
+            - name: DATABASE_URL
+              value: "sqlite:/data/activitypubbot.db"
+            - name: ORIGIN
+              value: {{ .Values.activitypubbot.origin }}
+            - name: PORT
+              value: "{{ .Values.service.port }}"
+            - name: BOTS_CONFIG_FILE
+              value: "{{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}"
+            - name: NODE_ENV
+              value: production
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -75,4 +81,4 @@ spec:
             claimName: {{ include "activitypub-bot.fullname" . }}-data-pvc
         - name: bots
           configMap:
-            name: {{ include "mychart.fullname" . }}-bots
+            name: {{ include "activitypub-bot.fullname" . }}-bots

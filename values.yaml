@@ -98,3 +98,7 @@ scriptConfig:
 
 activitypubbot:
   origin: chart-example.local
+
+sqlite:
+  storageClassName: "standard"
+  storageSize: "10Gi"
