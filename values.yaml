@@ -83,8 +83,8 @@ affinity: {}
 
 # User-defined JavaScript
 userScript: |
-  import DoNothingBot from '../lib/bots/donothing.js'
-  import OKBot from '../lib/bots/ok.js'
+  import DoNothingBot from '/app/lib/bots/donothing.js'
+  import OKBot from '/app/lib/bots/ok.js'
 
   export default {
     ok: new OKBot('ok'),

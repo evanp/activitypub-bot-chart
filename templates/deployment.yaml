@@ -33,7 +33,8 @@ spec:
           - name: data
             mountPath: /data
           - name: bots
-            mountPath: {{ .Values.scriptConfig.mountPath }}
+            mountPath: {{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}
+            subPath: {{ .Values.scriptConfig.fileName }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
