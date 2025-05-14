@@ -93,11 +93,12 @@ userScript: |
 
 # Configuration for where to mount the script
 scriptConfig:
-  mountPath: "/app/bots/"
+  mountPath: "/app/bots"
   fileName: "index.js"
 
 activitypubbot:
   origin: chart-example.local
+  logLevel: info
 
 sqlite:
   storageClassName: "standard"

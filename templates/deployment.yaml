@@ -64,6 +64,8 @@ spec:
               value: "{{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}"
             - name: NODE_ENV
               value: production
+            - name: LOG_LEVEL
+              value: {{ .Values.activitypubbot.logLevel }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
