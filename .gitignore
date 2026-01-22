@@ -1,0 +1,50 @@
+# Helm chart dependencies
+charts/*/charts/
+*.tgz
+
+# Helm chart lock files
+Chart.lock
+
+# Helm package archives
+*.tar.gz
+
+# Helm chart values overrides (local development)
+values-*.yaml
+*-override.yaml
+secrets.yaml
+
+# Helm plugin cache
+.helm/
+
+# Chart testing
+.cr-index/
+.cr-release-packages/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+tmp/
+temp/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
+
+# OS files
+Thumbs.db
+.Spotlight-V100
+.Trashes
