@@ -83,8 +83,7 @@ affinity: {}
 
 # User-defined JavaScript
 userScript: |
-  import DoNothingBot from '/app/lib/bots/donothing.js'
-  import OKBot from '/app/lib/bots/ok.js'
+  import { DoNothingBot, OKBot } from '@evanp/activitypub-bot'
 
   export default {
     ok: new OKBot('ok'),
