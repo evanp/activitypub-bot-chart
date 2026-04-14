@@ -66,6 +66,18 @@ spec:
               value: production
             - name: LOG_LEVEL
               value: {{ .Values.activitypubbot.logLevel }}
+            - name: TRUST_PROXY
+              value: "{{ .Values.activitypubbot.trustProxy }}"
+            {{- if .Values.activitypubbot.redis.existingSecret }}
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.activitypubbot.redis.existingSecret }}
+                  key: {{ .Values.activitypubbot.redis.secretKey | default "url" }}
+            {{- else if .Values.activitypubbot.redis.url }}
+            - name: REDIS_URL
+              value: {{ .Values.activitypubbot.redis.url | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

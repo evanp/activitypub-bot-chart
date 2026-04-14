@@ -98,6 +98,20 @@ scriptConfig:
 activitypubbot:
   origin: chart-example.local
   logLevel: info
+  # Express 'trust proxy' setting. Default of 1 trusts a single hop,
+  # which is what you get with a typical Ingress in front of the pod.
+  # Override with a number of hops, "true", or an IP/CIDR list as needed.
+  trustProxy: 1
+  # Redis/Valkey connection for distributed rate limiting. Optional:
+  # without it, the app falls back to in-memory rate limiting.
+  # Prefer existingSecret for production so the password isn't in values.yaml.
+  redis:
+    # Name of a Secret containing the full rediss:// URL.
+    existingSecret: ""
+    # Key within that Secret (default: "url").
+    secretKey: "url"
+    # Or set an inline URL (only for dev/testing — contains credentials).
+    url: ""
 
 sqlite:
   storageClassName: "standard"
