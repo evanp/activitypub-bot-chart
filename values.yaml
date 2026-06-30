@@ -95,6 +95,15 @@ scriptConfig:
   mountPath: "/app/bots"
   fileName: "index.js"
 
+# Domain blocklist: mounts a Mastodon-format denylist CSV (read via .Files from
+# the chart directory) into the pod as a dedicated ConfigMap and points
+# DOMAIN_BLOCK_LIST at it. A checksum annotation on the pod template rolls the
+# pods when the file changes. Separate from the data PVC.
+domainBlockList:
+  enabled: false
+  file: domain-blocklist.csv
+  mountDir: /etc/activitypub-bot/blocklist
+
 activitypubbot:
   origin: chart-example.local
   logLevel: info
