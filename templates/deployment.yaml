@@ -15,8 +15,11 @@ spec:
       {{- include "activitypub-bot.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- if or .Values.podAnnotations .Values.domainBlockList.enabled }}
+      {{- if or .Values.podAnnotations .Values.domainBlockList.enabled .Values.botIcons.enabled }}
       annotations:
+        {{- if .Values.botIcons.enabled }}
+        checksum/bot-icons: {{ include (print $.Template.BasePath "/bot-icons-configmap.yaml") . | sha256sum | quote }}
+        {{- end }}
         {{- if .Values.domainBlockList.enabled }}
         checksum/domain-blocklist: {{ .Files.Get .Values.domainBlockList.file | sha256sum | quote }}
         {{- end }}
@@ -42,6 +45,11 @@ spec:
           - name: bots
             mountPath: {{ .Values.scriptConfig.mountPath }}/{{ .Values.scriptConfig.fileName }}
             subPath: {{ .Values.scriptConfig.fileName }}
+          {{- if .Values.botIcons.enabled }}
+          - name: bot-icons
+            mountPath: {{ .Values.botIcons.mountPath | quote }}
+            readOnly: true
+          {{- end }}
           {{- if .Values.domainBlockList.enabled }}
           - name: domain-blocklist
             mountPath: {{ .Values.domainBlockList.mountDir }}
@@ -113,6 +121,11 @@ spec:
         - name: bots
           configMap:
             name: {{ include "activitypub-bot.fullname" . }}-bots
+        {{- if .Values.botIcons.enabled }}
+        - name: bot-icons
+          configMap:
+            name: {{ include "activitypub-bot.fullname" . }}-bot-icons
+        {{- end }}
         {{- if .Values.domainBlockList.enabled }}
         - name: domain-blocklist
           configMap:

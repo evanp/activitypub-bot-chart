@@ -1,0 +1,12 @@
+{{- if .Values.botIcons.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "activitypub-bot.fullname" . }}-bot-icons
+  labels:
+    {{- include "activitypub-bot.labels" . | nindent 4 }}
+binaryData:
+  {{- range .Values.botIcons.files }}
+  {{ base . }}: {{ required (printf "Missing bot icon file: %s" .) ($.Files.Get .) | b64enc | quote }}
+  {{- end }}
+{{- end }}
