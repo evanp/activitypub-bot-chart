@@ -3,5 +3,5 @@ name: activitypub-bot
 description: A server-side ActivityPub bot framework.
 
 type: application
-version: 0.45.0
-appVersion: "0.55.0"
+version: 0.46.0
+appVersion: "0.56.1"
